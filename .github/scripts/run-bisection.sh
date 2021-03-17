@@ -34,6 +34,14 @@ fi
 
 BISECT_BASE=${HOME}/.torchbench/bisection/${BISECT_ISSUE}
 
+# update source code repositories and clean up the old build
+pushd ${PYTORCH_SRC_DIR}
+git checkout master
+git pull origin master
+git submodule sync && git submodule update --init --recursive
+rm -rf build
+popd
+
 # get torch_nightly.html
 curl -O https://download.pytorch.org/whl/nightly/cu102/torch_nightly.html 
 
