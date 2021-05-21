@@ -15,3 +15,7 @@ jobs:
       - name: Run benchmark
         run: |
           bash ./.github/scripts/run-sweep-nodocker.sh
+      - name: Upload to Scuba
+        run: |
+          SWEEP_DIR=${HOME}/nightly-sweep/gh${GITHUB_RUN_ID}/results
+          bash ./.github/scripts/upload-scrib.sh $SWEEP_DIR
