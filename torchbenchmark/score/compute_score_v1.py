@@ -115,7 +115,7 @@ class TorchBenchScoreV1:
             left, sep, right = jit_name.rpartition('-jit')
             eager_name = left + "-eager" + right
             # We assume if a jit test exists, there must be an eager test
-            assert eager_name in norm, f"Can't find eager test name {eager_test_name}"
+            assert eager_name in norm, f"Can't find eager test name {eager_name}"
             result_ref[jit_name] = dict()
             result_ref[jit_name]['jit_norm'] = norm[jit_name]['norm']
             result_ref[jit_name]['eager_norm'] = norm[eager_name]['norm']

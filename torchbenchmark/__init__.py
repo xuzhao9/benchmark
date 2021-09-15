@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import torch
 from typing import Any, Callable, Dict, List, NoReturn, Optional, Tuple
 from urllib import request
 
