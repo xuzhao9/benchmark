@@ -15,5 +15,3 @@ chmod +x "$filename"
 . ~/miniconda3/etc/profile.d/conda.sh
 conda activate base
 conda install -y python=3.7
-
-

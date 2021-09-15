@@ -1,17 +1,11 @@
 """
 Compute the benchmark score given a frozen score configuration and current benchmark data.
 """
-import argparse
-import json
 import math
-import sys
-import os
 import re
 import yaml
 import importlib
 
-from enum import Enum
-from tabulate import tabulate
 from pathlib import Path
 from collections import defaultdict
 from typing import List
@@ -25,7 +19,7 @@ def _get_model_task(model_name):
     """
     try:
         module = importlib.import_module(f'torchbenchmark.models.{model_name}', package=__name__)
-    except:
+    except Exception:
         raise ValueError(f"Unable to get task for model: {model_name}")
     Model = getattr(module, 'Model')
     return Model.task
@@ -110,13 +104,13 @@ class TorchBenchScoreV1:
         self.target = target
 
     def _filter_jit_tests(self, norm):
-        result_ref = dict()
+        result_ref = {}
         for jit_name in filter(lambda x: '-jit' in x, norm.keys()):
             left, sep, right = jit_name.rpartition('-jit')
             eager_name = left + "-eager" + right
             # We assume if a jit test exists, there must be an eager test
             assert eager_name in norm, f"Can't find eager test name {eager_name}"
-            result_ref[jit_name] = dict()
+            result_ref[jit_name] = {}
             result_ref[jit_name]['jit_norm'] = norm[jit_name]['norm']
             result_ref[jit_name]['eager_norm'] = norm[eager_name]['norm']
         return result_ref
@@ -138,9 +132,6 @@ class TorchBenchScoreV1:
             domain_weights[test.name] = (1.0 / category_cnt) * (1.0 / domain_cnt) * (1.0 / model_cnt)
         # Setup config weights
         for test in suite.all_tests:
-            category = test.category
-            domain = test.domain
-            model = test.model
             model_tests = suite.tests(test.category, test.domain, test.model)
             config_weights[test.name] = test.weight / sum(map(lambda x: x.weight, model_tests))
         # Runtime check the weights constraint
@@ -171,11 +162,11 @@ class TorchBenchScoreV1:
         and calculates the normalization values based on the reference data.
         It also sets up the domain weights of the score.
         """
-        norm = dict()
+        norm = {}
         for b in ref_json_obj['benchmarks']:
             name = _sanitize_name(b['name'])
-            norm.setdefault(name, dict())
-            norm[name].setdefault('norm', dict())
+            norm.setdefault(name, {})
+            norm[name].setdefault('norm', {})
             norm[name]['norm'] = b['stats']['mean']
         return norm
 
@@ -188,8 +179,8 @@ class TorchBenchScoreV1:
             score += benchmark_score
         return math.exp(score)
 
-    def data_in_list(self, n, l):
-        for e in l:
+    def data_in_list(self, n, lst):
+        for e in lst:
             if e not in n:
                 return False
         return True

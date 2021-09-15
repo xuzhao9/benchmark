@@ -5,7 +5,7 @@ Torchbench provides a normalized benchmark score similar to 'spec' or other comp
 This is a prototype.  Current status and limitations are described below.
 
 ## Score versioning
-The score is versioned, meaning only a certain set of benchmarks are captured in a particular 
+The score is versioned, meaning only a certain set of benchmarks are captured in a particular
 version of the score (even if additional benchmarks are added to the suite).  The relative weight
 of each benchmark in the overall score is frozen, along with a normalization factor measured on
 a particular 'gold' machine with a particular PyTorch release.  The intent is to measure the effect
@@ -20,17 +20,16 @@ Or, use `--benchmark_data_dir` instead, pointing to a directory containing multi
 ## New score versions
 Periodically, as more workloads have been added to the torchbenchmark suite, or as changes to
 relative weights or categories have been proposed, a new score configuration should be generated
-rather than modifying an existing score definition. 
+rather than modifying an existing score definition.
 
-See `python generate_score_config.py -h` 
+See `python generate_score_config.py -h`.
 
 ## Issues and Next Steps
-For accurate score comparisons, measurements should be computed on the same machine 
-(or at least same machine spec) as the data used to produce normalization constants 
-in the score configuration.  
+For accurate score comparisons, measurements should be computed on the same machine
+(or at least same machine spec) as the data used to produce normalization constants
+in the score configuration.
 
-- compute_score.py should assert the machine type matches by default
+- compute_score.py should assert the machine type matches by default.
 - currently, a circleCI 'medium' gpu worker was used for the normalization data
-- soon, a particular CPU/GPU config should be deliberately selected along with a 
-  list of models/categories to be frozen for first long-living rev of the score
-  
+- soon, a particular CPU/GPU config should be deliberately selected along with a
+  list of models/categories to be frozen for first long-living rev of the score.
